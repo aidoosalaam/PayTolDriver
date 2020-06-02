@@ -19,7 +19,7 @@ import com.andela.buildsdgs.rtrc.models.Vehicle;
 import com.andela.buildsdgs.rtrc.models.VehicleCategory;
 import com.andela.buildsdgs.rtrc.models.VehicleCategoryList;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
-import com.andela.buildsdgs.rtrc.services.ServiceBuilder;
+import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleCategorySpinnerAdaptor;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -54,12 +54,11 @@ public class AddVehicleActivity extends AppCompatActivity {
         edtChassisNumber = findViewById(R.id.edt_chassis_number);
         btnSubmitVehicle = findViewById(R.id.btn_submit_vehicle);
         spnCategories = findViewById(R.id.spinner_car_categories);
-        //final String[] categpryId = new String[1];
         final Vehicle vehicle = new Vehicle();
 
         //make API call for vehicle categories
         final String authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjM3M2I0YzQtZjhhMy00N2QwLWI3ZmItOGFiNjQ3NTI0MDdiIiwidXNlcm5hbWUiOiJzYWxtYSIsImV4cCI6MTYyMjE1NTA0MywiZW1haWwiOiJhaWRvb2FtYXR1QGdtYWlsLmNvbSIsIm9yaWdfaWF0IjoxNTkxMDUxMDQzfQ.uv2COMdS9DWq_c4krUTFX9dktvMNWzK98V0OLLnfb4Q";
-        RTRCService rtrcService = ServiceBuilder.buildService(RTRCService.class);
+        RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
         Call<VehicleCategoryList> categoryListCall = rtrcService.getCategoryList("Bearer " + authToken);
         categoryListCall.enqueue(new Callback<VehicleCategoryList>() {
             @Override
@@ -72,13 +71,14 @@ public class AddVehicleActivity extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             VehicleCategory category = categoryList.get(position);
-                            // categpryId[0] = category.getId();
                             vehicle.setCategory(category.getId());
                             Toast.makeText(AddVehicleActivity.this, "Selected : " + vehicle.getCategory(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
+                            Snackbar.make(parent_view, "Category not selected ", Snackbar.LENGTH_SHORT).show();
+
                         }
                     });
                 } else {
@@ -92,13 +92,20 @@ public class AddVehicleActivity extends AppCompatActivity {
                 }
 
             }
-
             @Override
             public void onFailure(Call<VehicleCategoryList> call, Throwable t) {
                 Snackbar.make(parent_view, "Request Failed ; " + t.toString(), Snackbar.LENGTH_SHORT).show();
-
             }
         });
+
+        //send vehicle registration request
+        submitVehicle(vehicle);
+
+    }
+
+    public void submitVehicle(Vehicle vehicleParam){
+        final Vehicle vehicleRequest = vehicleParam;
+        final String authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjM3M2I0YzQtZjhhMy00N2QwLWI3ZmItOGFiNjQ3NTI0MDdiIiwidXNlcm5hbWUiOiJzYWxtYSIsImV4cCI6MTYyMjE1NTA0MywiZW1haWwiOiJhaWRvb2FtYXR1QGdtYWlsLmNvbSIsIm9yaWdfaWF0IjoxNTkxMDUxMDQzfQ.uv2COMdS9DWq_c4krUTFX9dktvMNWzK98V0OLLnfb4Q";
 
         btnSubmitVehicle.setOnClickListener(new View.OnClickListener() {
 
@@ -110,15 +117,15 @@ public class AddVehicleActivity extends AppCompatActivity {
                 final String model = edtVehicleModel.getText().toString().trim();
                 final String chasisNumber = edtChassisNumber.getText().toString().trim();
 
-                if (licenseNum.equals("") || registrationNum.equals("") || model.equals("") || chasisNumber.equals("")) {
+                if ( "".equals(licenseNum)  || "".equals(registrationNum) || "".equals(model) || "".equals(chasisNumber)) {
                     Snackbar.make(parent_view, "All fields must have values", Snackbar.LENGTH_SHORT).show();
                 } else {
-                    vehicle.setChassis_number(chasisNumber);
-                    vehicle.setLicense_number(licenseNum);
-                    vehicle.setModel(model);
-                    vehicle.setRegistration_number(registrationNum);
-                    RTRCService rtrcService = ServiceBuilder.buildService(RTRCService.class);
-                    Call<Vehicle> vehicleAddCall = rtrcService.addVehicle("Bearer " + authToken, vehicle);
+                    vehicleRequest.setChassisNumber(chasisNumber);
+                    vehicleRequest.setLicenseNumber(licenseNum);
+                    vehicleRequest.setModel(model);
+                    vehicleRequest.setRegistrationNumber(registrationNum);
+                    RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
+                    Call<Vehicle> vehicleAddCall = rtrcService.addVehicle("Bearer " + authToken, vehicleRequest);
                     vehicleAddCall.enqueue(new Callback<Vehicle>() {
                         @Override
                         public void onResponse(Call<Vehicle> call, Response<Vehicle> response) {
@@ -140,9 +147,6 @@ public class AddVehicleActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
-
 
 }

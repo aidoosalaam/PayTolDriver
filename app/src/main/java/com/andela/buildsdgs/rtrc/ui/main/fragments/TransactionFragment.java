@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andela.buildsdgs.rtrc.R;
-import com.andela.buildsdgs.rtrc.controller.TransactionController;
 import com.andela.buildsdgs.rtrc.models.Transaction;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.TransactionRecyclerAdaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionFragment extends Fragment {
@@ -30,7 +30,7 @@ public class TransactionFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycle_view_trxns);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        List<Transaction> transactions = new TransactionController().getTransactionList();
+        List<Transaction> transactions = new ArrayList<>();
         recyclerAdaptor = new TransactionRecyclerAdaptor(mContext,transactions);
         recyclerView.setAdapter(recyclerAdaptor);
         return view;

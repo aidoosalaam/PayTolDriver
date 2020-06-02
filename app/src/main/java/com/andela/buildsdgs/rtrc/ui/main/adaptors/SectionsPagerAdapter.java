@@ -26,7 +26,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-      return fragmentList.size();
+        return fragmentList.size();
     }
 
     @Nullable

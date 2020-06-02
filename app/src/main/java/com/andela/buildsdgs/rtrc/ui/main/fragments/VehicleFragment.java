@@ -13,16 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.andela.buildsdgs.rtrc.MainActivity;
 import com.andela.buildsdgs.rtrc.R;
-import com.andela.buildsdgs.rtrc.controller.VehicleController;
 import com.andela.buildsdgs.rtrc.models.Vehicle;
 import com.andela.buildsdgs.rtrc.ui.main.activity.AddVehicleActivity;
-import com.andela.buildsdgs.rtrc.ui.main.activity.LoginActivity;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleRecyclerAdaptor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleFragment extends Fragment {
@@ -45,12 +42,9 @@ public class VehicleFragment extends Fragment {
         });
 
         //fetch Vehicles List From API
-        List<Vehicle> vehicles = new VehicleController().getVehicleList();
+        List<Vehicle> vehicles = new ArrayList<>();
         VehicleRecyclerAdaptor recyclerAdaptor = new VehicleRecyclerAdaptor(mContext,vehicles);
         regVehicleRecyView.setAdapter(recyclerAdaptor);
-
-
-
         return view;
     }
 

@@ -13,7 +13,7 @@ import com.andela.buildsdgs.rtrc.R;
 import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
-import com.andela.buildsdgs.rtrc.services.ServiceBuilder;
+import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
@@ -24,14 +24,13 @@ import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText edtEmail;
-    EditText edtUserName;
-    EditText edtPassword;
-    EditText edtConfirmPassword;
-    EditText edtPhoneNumber;
+    private EditText edtEmail;
+    private EditText edtUserName;
+    private EditText edtPassword;
+    private EditText edtConfirmPassword;
+    private EditText edtPhoneNumber;
     private EditText edtFullname;
-    private TextView btnCreateAccount;
-    TextView btnSignupLogin;
+    private TextView btnSignupLogin;
     private View parent_view;
 
 
@@ -48,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         edtFullname = findViewById(R.id.edt_signup_fullname);
         edtPhoneNumber = findViewById(R.id.edt_signup_phone);
         btnSignupLogin = findViewById(R.id.btn_signup_login);
-        btnCreateAccount = findViewById(R.id.btn_signup_create_acc);
+        TextView btnCreateAccount = findViewById(R.id.btn_signup_create_acc);
 
         btnSignupLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,11 +65,11 @@ public class SignUpActivity extends AppCompatActivity {
                 final String confirmPassword = edtConfirmPassword.getText().toString().trim();
                 final String fullname = edtFullname.getText().toString().trim();
                 final String phoneNumber = edtPhoneNumber.getText().toString().trim();
-                if (email.equals("") || userName.equals("") || password.equals("") || confirmPassword.equals("") || fullname.equals("") || phoneNumber.equals("")) {
+                if ("".equals(email) || "".equals(userName) || "".equals(password) || "".equals(confirmPassword) || "".equals(fullname) || "".equals(phoneNumber)) {
                     Snackbar.make(parent_view, "All fields must have values", Snackbar.LENGTH_SHORT).show();
                 } else {
                     User registerUser = new User(phoneNumber, fullname, email, userName, password, confirmPassword);
-                    RTRCService rtrcService = ServiceBuilder.buildService(RTRCService.class);
+                    RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
                     System.out.println("SignUp Request : " + registerUser.toString());
                     Call<UserDetail> userSignUpCall = rtrcService.signUpUser(registerUser);
                     userSignUpCall.enqueue(new Callback<UserDetail>() {

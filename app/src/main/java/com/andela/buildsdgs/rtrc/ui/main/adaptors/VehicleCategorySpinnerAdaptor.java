@@ -16,16 +16,14 @@ import com.andela.buildsdgs.rtrc.models.VehicleCategory;
 import java.util.List;
 
 public class VehicleCategorySpinnerAdaptor extends ArrayAdapter<VehicleCategory> {
-    private Context mContect;
     private List<VehicleCategory> categoryList;
     private LayoutInflater layoutInflater;
     private int mResource;
 
     public VehicleCategorySpinnerAdaptor(@NonNull Context context, int resource, @NonNull List<VehicleCategory> objects) {
         super(context, resource, 0, objects);
-        this.mContect = context;
         categoryList = objects;
-        layoutInflater = LayoutInflater.from(mContect);
+        layoutInflater = LayoutInflater.from(context);
         mResource = resource;
 
     }
@@ -50,7 +48,7 @@ public class VehicleCategorySpinnerAdaptor extends ArrayAdapter<VehicleCategory>
         TextView categoryName = view.findViewById(R.id.txt_category_name);
         categoryName.setText(vehicleCategory.getName());
         TextView categoryAmount = view.findViewById(R.id.txt_toll_price);
-        categoryAmount.setText("GHS " + vehicleCategory.getToll_fee());
+        categoryAmount.setText("GHS " + vehicleCategory.getTollFee());
         return view;
     }
 }

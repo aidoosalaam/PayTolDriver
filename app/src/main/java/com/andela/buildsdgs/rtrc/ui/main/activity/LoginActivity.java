@@ -10,11 +10,10 @@ import android.widget.TextView;
 
 import com.andela.buildsdgs.rtrc.MainActivity;
 import com.andela.buildsdgs.rtrc.R;
-import com.andela.buildsdgs.rtrc.controller.UserController;
 import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
-import com.andela.buildsdgs.rtrc.services.ServiceBuilder;
+import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -27,12 +26,11 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private View parent_view;
-    TextInputEditText usernameEditText;
-    TextInputEditText passwordEditText;
-    TextView btnForgotPassword;
-    TextView btnloginSignUp;
-    Button btnLogin;
-    UserController userController;
+    private TextInputEditText usernameEditText;
+    private TextInputEditText passwordEditText;
+    private TextView btnForgotPassword;
+    private TextView btnloginSignUp;
+    private Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         btnForgotPassword = findViewById(R.id.btn_forgot_password);
         btnloginSignUp = findViewById(R.id.btn_login_sign_up);
         btnLogin = findViewById(R.id.btn_login);
-        userController = new UserController();
 
 
         btnloginSignUp.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     String userEmail = usernameEditText.getText().toString().trim();
                     String password = passwordEditText.getText().toString().trim();
-                    RTRCService rtrcService = ServiceBuilder.buildService(RTRCService.class);
+                    RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
                     System.out.println("Login Details : Email : " + userEmail + "\n Password : " + password);
 
                     Call<UserDetail> userLoginCall = rtrcService.loginUser(new User(userEmail, password));
@@ -90,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         }
-
                         @Override
                         public void onFailure(Call<UserDetail> call, Throwable t) {
                             System.out.println(" debuggin starts 3....");
@@ -102,38 +98,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void performActions(int viewId) {
-        switch (viewId) {
-            case R.id.btn_login:
-                btnLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Snackbar.make(parent_view, "Sign Up", Snackbar.LENGTH_SHORT).show();
-
-//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        startActivity(intent);
-
-                    }
-                });
-
-            case R.id.btn_login_sign_up:
-                break;
-            case R.id.btn_forgot_password:
-
-            default:
-                break;
-        }
-        btnForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(parent_view, "Forgot Password", Snackbar.LENGTH_SHORT).show();
-            }
-        });
-        ((View) findViewById(R.id.btn_login_sign_up)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(parent_view, "Sign Up", Snackbar.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
