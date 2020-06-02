@@ -3,69 +3,72 @@ package com.andela.buildsdgs.rtrc.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Vehicle {
-    private String updated_at;
-    private String registration_number;
-    private String chassis_number;
-    private String qr_code;
-    private String created_at;
+    @SerializedName("updated_at")
+    private String updatedAt;
+    @SerializedName("registration_number")
+    private String registrationNumber;
+    @SerializedName("chassis_number")
+    private String chassisNumber;
+    @SerializedName("qr_code")
+    private String qrCode;
+    @SerializedName("created_at")
+    private String createdAt;
     private String model;
     private String id;
-   // @SerializedName("category")
-   // private VehicleCategory vehicleCategory;
-   // @SerializedName("category")
     private Object category;
     private User user;
-    private String license_number;
+    @SerializedName("license_number")
+    private String licenseNumber;
 
     public Vehicle() {
     }
 
-    public Vehicle(String registration_number, String chassis_number, String model, String category, String license_number) {
-        this.registration_number = registration_number;
-        this.chassis_number = chassis_number;
+    public Vehicle(String registrationNumber, String chassisNumber, String model, String category, String licenseNumber) {
+        this.registrationNumber = registrationNumber;
+        this.chassisNumber = chassisNumber;
         this.model = model;
         this.category = category;
-        this.license_number = license_number;
+        this.licenseNumber = licenseNumber;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public String getRegistration_number() {
-        return registration_number;
+    public String getRegistrationNumber() {
+        return registrationNumber;
     }
 
-    public void setRegistration_number(String registration_number) {
-        this.registration_number = registration_number;
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 
-    public String getChassis_number() {
-        return chassis_number;
+    public String getChassisNumber() {
+        return chassisNumber;
     }
 
-    public void setChassis_number(String chassis_number) {
-        this.chassis_number = chassis_number;
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
     }
 
-    public String getQr_code() {
-        return qr_code;
+    public String getQrCode() {
+        return qrCode;
     }
 
-    public void setQr_code(String qr_code) {
-        this.qr_code = qr_code;
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getModel() {
@@ -88,7 +91,7 @@ public class Vehicle {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Object category) {
         this.category = category;
     }
 
@@ -100,11 +103,11 @@ public class Vehicle {
         this.user = user;
     }
 
-    public String getLicense_number() {
-        return license_number;
+    public String getLicenseNumber() {
+        return licenseNumber;
     }
 
-    public void setLicense_number(String license_number) {
-        this.license_number = license_number;
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
 }

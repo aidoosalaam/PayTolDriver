@@ -1,18 +1,24 @@
 package com.andela.buildsdgs.rtrc.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class VehicleCategory {
     private String id;
     private String name;
-    private String toll_fee;
+    @SerializedName("toll_fee")
+    private String tollFee;
     private boolean active;
-    private String created_at;
-    private String updated_at;
-    private String image_url;
+    @SerializedName("created_at")
+    private String createdAt;
+    @SerializedName("updated_at")
+    private String updatedAt;
+    @SerializedName("image_url")
+    private String imageUrl;
 
-    public VehicleCategory(String name, String toll_fee, String image_url) {
+    public VehicleCategory(String name, String tollFee, String imageUrl) {
         this.name = name;
-        this.toll_fee = toll_fee;
-        this.image_url = image_url;
+        this.tollFee = tollFee;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -31,12 +37,12 @@ public class VehicleCategory {
         this.name = name;
     }
 
-    public String getToll_fee() {
-        return toll_fee;
+    public String getTollFee() {
+        return tollFee;
     }
 
-    public void setToll_fee(String toll_fee) {
-        this.toll_fee = toll_fee;
+    public void setTollFee(String tollFee) {
+        this.tollFee = tollFee;
     }
 
     public boolean isActive() {
@@ -47,34 +53,27 @@ public class VehicleCategory {
         this.active = active;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public String getImage_url() {
-        return image_url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
-
-    //     "id": "6d41eddd-8f44-485e-9fc0-c1a7b5a665aa",
-//             "name": "PICK-UP/VANS",
-//             "toll_fee": "1.00",
-//             "active": true,
-//             "created_at": "2020-05-28T23:31:02.606315-05:00",
-//             "updated_at": "2020-05-28T23:31:02.606343-05:00"
 }
