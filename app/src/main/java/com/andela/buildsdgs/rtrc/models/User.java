@@ -20,6 +20,14 @@ public class User {
         this.password = password;
     }
 
+    public User(String phone, String name, String email, String username, String password1, String password2) {
+        this.phone = phone;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password1 = password1;
+        this.password2 = password2;
+    }
 
     public String getIs_active() {
         return is_active;

@@ -1,9 +1,14 @@
 package com.andela.buildsdgs.rtrc.controller;
 
+import android.content.Intent;
+
+import com.andela.buildsdgs.rtrc.MainActivity;
 import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceBuilder;
+import com.andela.buildsdgs.rtrc.ui.main.activity.LoginActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,11 +19,4 @@ public class UserController {
     public UserController() {
     }
 
-//    public UserDetail loginUser(String user){
-//        UserDetail userDetail;
-//        System.out.println(" debuggin starts 1....");
-//
-//
-//        return userDetail;
-//    }
 }

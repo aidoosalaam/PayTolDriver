@@ -39,9 +39,9 @@ public class VehicleRecyclerAdaptor extends RecyclerView.Adapter<VehicleRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Vehicle vehicle = vehicles.get(position);
-        holder.mTextVehicleName.setText(vehicle.getVehicleName());
-        holder.mTextVehicleCategory.setText(vehicle.getVehicleCategory());
-        holder.mPosition=position;
+//        holder.mTextVehicleName.setText(vehicle.getModel());
+//        holder.mTextVehicleCategory.setText(vehic);
+//        holder.mPosition=position;
     }
 
     @Override
@@ -54,6 +54,7 @@ public class VehicleRecyclerAdaptor extends RecyclerView.Adapter<VehicleRecycler
         public final CircularImageView mImageVehicle;
         public final TextView mTextVehicleName;
         public final TextView mTextVehicleCategory;
+        public final TextView mTxtRegVehicleNumber;
         public int mPosition;
 
         public ViewHolder(@NonNull View itemView) {
@@ -61,6 +62,7 @@ public class VehicleRecyclerAdaptor extends RecyclerView.Adapter<VehicleRecycler
             mImageVehicle = itemView.findViewById(R.id.image_reg_vehicle_image);
             mTextVehicleName = itemView.findViewById(R.id.txt_reg_vehicle_name);
             mTextVehicleCategory = itemView.findViewById(R.id.txt_reg_vehicle_category);
+            mTxtRegVehicleNumber = itemView.findViewById(R.id.txt_reg_vehicle_number);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

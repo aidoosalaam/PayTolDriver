@@ -18,6 +18,8 @@ import com.andela.buildsdgs.rtrc.services.ServiceBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         btnloginSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     String userEmail = usernameEditText.getText().toString().trim();
-                    String password =  passwordEditText.getText().toString().trim();
+                    String password = passwordEditText.getText().toString().trim();
                     RTRCService rtrcService = ServiceBuilder.buildService(RTRCService.class);
                     System.out.println("Login Details : Email : " + userEmail + "\n Password : " + password);
 
@@ -79,8 +81,13 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
-                                System.out.println("Error Occured ...." + response.errorBody().toString());
-                                Snackbar.make(parent_view, "Error occured : Status Code  " + response.code(), Snackbar.LENGTH_SHORT).show();
+                                try {
+                                    JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                    System.out.println("Error Occurred ...." + response.errorBody().toString());
+                                    Snackbar.make(parent_view, jObjError.toString(), Snackbar.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    Snackbar.make(parent_view, "Failed; Reason : " + e.toString(), Snackbar.LENGTH_SHORT).show();
+                                }
                             }
                         }
 
@@ -94,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void performActions(int viewId) {
         switch (viewId) {
             case R.id.btn_login:

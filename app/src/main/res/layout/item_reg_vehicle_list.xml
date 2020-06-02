@@ -73,6 +73,15 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                             android:textColor="@color/grey_40" />
 
+                        <TextView
+                            android:id="@+id/txt_reg_vehicle_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:text="AS-4345-19"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/grey_60" />
+
                     </LinearLayout>
             </LinearLayout>
 
