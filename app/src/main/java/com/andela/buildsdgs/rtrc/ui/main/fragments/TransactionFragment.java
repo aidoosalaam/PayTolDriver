@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionFragment extends Fragment {
-    private static final String TAG="TransactionFragment";
     private Context mContext;
     private TransactionRecyclerAdaptor recyclerAdaptor;
     @Nullable

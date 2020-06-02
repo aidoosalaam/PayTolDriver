@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    SectionsPagerAdapter sectionsPagerAdapter;
-    ViewPager viewPager;
+    private SectionsPagerAdapter sectionsPagerAdapter;
+    private ViewPager viewPager;
 
 
     @Override

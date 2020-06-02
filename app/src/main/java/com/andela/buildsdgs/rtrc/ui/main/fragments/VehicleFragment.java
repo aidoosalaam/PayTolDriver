@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleFragment extends Fragment {
-    private static final String TAG = "VehicleFragment";
     private Context mContext;
     @Nullable
     @Override
