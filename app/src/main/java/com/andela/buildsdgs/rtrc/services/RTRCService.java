@@ -1,9 +1,12 @@
 package com.andela.buildsdgs.rtrc.services;
 
+
 import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.models.Vehicle;
+import com.andela.buildsdgs.rtrc.models.VehicleAddRequest;
 import com.andela.buildsdgs.rtrc.models.VehicleCategoryList;
+import com.andela.buildsdgs.rtrc.models.VehicleListResp;
 import com.andela.buildsdgs.rtrc.utility.ServiceContants;
 
 
@@ -13,6 +16,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface RTRCService {
     @POST(ServiceContants.CONTEXT_LOGIN)
@@ -21,6 +25,10 @@ public interface RTRCService {
     Call<UserDetail> signUpUser(@Body User user);
     @GET(ServiceContants.CONTEXT_VEHICLE_CATEGORY_LIST)
     Call<VehicleCategoryList> getCategoryList(@Header("Authorization") String bearerToken);
-    @POST(ServiceContants.CONTEXT_VEHICLE_ADD)
-    Call<Vehicle> addVehicle(@Header("Authorization") String bearerToken, @Body Vehicle vehicle);
+    @POST(ServiceContants.CONTEXT_VEHICLES)
+    Call<Vehicle> addVehicle(@Header("Authorization") String bearerToken, @Body VehicleAddRequest vehicle);
+    @GET(ServiceContants.CONTEXT_VEHICLES)
+    Call<VehicleListResp> getVehiclesList(@Header("Authorization") String bearerToken);
+    @GET(ServiceContants.CONTEXT_VEHICLE_DETAIL)
+    Call<Vehicle> getVehicleDetail(@Header("Authorization") String bearerToken, @Path("id") String id);
 }

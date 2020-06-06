@@ -14,21 +14,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andela.buildsdgs.rtrc.R;
-import com.andela.buildsdgs.rtrc.models.Vehicle;
+import com.andela.buildsdgs.rtrc.models.VehicleListResp;
+import com.andela.buildsdgs.rtrc.services.RTRCService;
+import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.activity.AddVehicleActivity;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleRecyclerAdaptor;
+import com.andela.buildsdgs.rtrc.utility.ServiceContants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VehicleFragment extends Fragment {
     private Context mContext;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_vehicle_layout,container,false);
-        RecyclerView regVehicleRecyView =  view.findViewById(R.id.recycler_view_reg_vehicles);
+        final View view = inflater.inflate(R.layout.fragment_vehicle_layout, container, false);
+        final RecyclerView regVehicleRecyView = view.findViewById(R.id.recycler_view_reg_vehicles);
         LinearLayoutManager regRecyLayoutManager = new LinearLayoutManager(mContext);
         regVehicleRecyView.setLayoutManager(regRecyLayoutManager);
         FloatingActionButton fab = view.findViewById(R.id.fabtn_add_vehicle);
@@ -41,9 +50,32 @@ public class VehicleFragment extends Fragment {
         });
 
         //fetch Vehicles List From API
-        List<Vehicle> vehicles = new ArrayList<>();
-        VehicleRecyclerAdaptor recyclerAdaptor = new VehicleRecyclerAdaptor(mContext,vehicles);
-        regVehicleRecyView.setAdapter(recyclerAdaptor);
+        final RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
+        Call<VehicleListResp> vehicleCall = rtrcService.getVehiclesList("Bearer " + ServiceContants.AUTH_TOKEN);
+        vehicleCall.enqueue(new Callback<VehicleListResp>() {
+            @Override
+            public void onResponse(Call<VehicleListResp> call, Response<VehicleListResp> response) {
+
+                if (response.isSuccessful()) {
+                    VehicleRecyclerAdaptor recyclerAdaptor = new VehicleRecyclerAdaptor(mContext, response.body().getResults());
+                    regVehicleRecyView.setAdapter(recyclerAdaptor);
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Snackbar.make(view, "Could not retrieve vehicles. Reason : " + jObjError.toString(), Snackbar.LENGTH_SHORT).show();
+
+                    } catch (Exception e) {
+                        Snackbar.make(view, "Failed; Reason : " + e.toString(), Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<VehicleListResp> call, Throwable t) {
+                Snackbar.make(view, "Failed; Reason : " + t.toString(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+
         return view;
     }
 
@@ -55,6 +87,6 @@ public class VehicleFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.mContext=context;
+        this.mContext = context;
     }
 }

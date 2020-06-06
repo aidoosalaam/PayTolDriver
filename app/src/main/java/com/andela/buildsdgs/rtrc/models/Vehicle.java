@@ -1,5 +1,6 @@
 package com.andela.buildsdgs.rtrc.models;
 
+
 import com.google.gson.annotations.SerializedName;
 
 public class Vehicle {
@@ -15,21 +16,11 @@ public class Vehicle {
     private String createdAt;
     private String model;
     private String id;
-    private Object category;
+    @SerializedName("category")
+    private VehicleCategory category;
     private User user;
     @SerializedName("license_number")
     private String licenseNumber;
-
-    public Vehicle() {
-    }
-
-    public Vehicle(String registrationNumber, String chassisNumber, String model, String category, String licenseNumber) {
-        this.registrationNumber = registrationNumber;
-        this.chassisNumber = chassisNumber;
-        this.model = model;
-        this.category = category;
-        this.licenseNumber = licenseNumber;
-    }
 
     public String getUpdatedAt() {
         return updatedAt;
@@ -87,11 +78,11 @@ public class Vehicle {
         this.id = id;
     }
 
-    public Object getCategory() {
+    public VehicleCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Object category) {
+    public void setCategory(VehicleCategory category) {
         this.category = category;
     }
 

@@ -16,11 +16,13 @@ import android.widget.Toast;
 import com.andela.buildsdgs.rtrc.MainActivity;
 import com.andela.buildsdgs.rtrc.R;
 import com.andela.buildsdgs.rtrc.models.Vehicle;
+import com.andela.buildsdgs.rtrc.models.VehicleAddRequest;
 import com.andela.buildsdgs.rtrc.models.VehicleCategory;
 import com.andela.buildsdgs.rtrc.models.VehicleCategoryList;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleCategorySpinnerAdaptor;
+import com.andela.buildsdgs.rtrc.utility.ServiceContants;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
@@ -54,12 +56,11 @@ public class AddVehicleActivity extends AppCompatActivity {
         edtChassisNumber = findViewById(R.id.edt_chassis_number);
         btnSubmitVehicle = findViewById(R.id.btn_submit_vehicle);
         spnCategories = findViewById(R.id.spinner_car_categories);
-        final Vehicle vehicle = new Vehicle();
+        final VehicleAddRequest vehicle = new VehicleAddRequest();
 
         //make API call for vehicle categories
-        final String authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjM3M2I0YzQtZjhhMy00N2QwLWI3ZmItOGFiNjQ3NTI0MDdiIiwidXNlcm5hbWUiOiJzYWxtYSIsImV4cCI6MTYyMjE1NTA0MywiZW1haWwiOiJhaWRvb2FtYXR1QGdtYWlsLmNvbSIsIm9yaWdfaWF0IjoxNTkxMDUxMDQzfQ.uv2COMdS9DWq_c4krUTFX9dktvMNWzK98V0OLLnfb4Q";
         RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
-        Call<VehicleCategoryList> categoryListCall = rtrcService.getCategoryList("Bearer " + authToken);
+        Call<VehicleCategoryList> categoryListCall = rtrcService.getCategoryList("Bearer " + ServiceContants.AUTH_TOKEN);
         categoryListCall.enqueue(new Callback<VehicleCategoryList>() {
             @Override
             public void onResponse(Call<VehicleCategoryList> call, Response<VehicleCategoryList> response) {
@@ -103,9 +104,8 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     }
 
-    public void submitVehicle(Vehicle vehicleParam){
-        final Vehicle vehicleRequest = vehicleParam;
-        final String authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjM3M2I0YzQtZjhhMy00N2QwLWI3ZmItOGFiNjQ3NTI0MDdiIiwidXNlcm5hbWUiOiJzYWxtYSIsImV4cCI6MTYyMjE1NTA0MywiZW1haWwiOiJhaWRvb2FtYXR1QGdtYWlsLmNvbSIsIm9yaWdfaWF0IjoxNTkxMDUxMDQzfQ.uv2COMdS9DWq_c4krUTFX9dktvMNWzK98V0OLLnfb4Q";
+    public void submitVehicle(VehicleAddRequest vehicleParam){
+        final VehicleAddRequest vehicleRequest = vehicleParam;
 
         btnSubmitVehicle.setOnClickListener(new View.OnClickListener() {
 
@@ -125,7 +125,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     vehicleRequest.setModel(model);
                     vehicleRequest.setRegistrationNumber(registrationNum);
                     RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
-                    Call<Vehicle> vehicleAddCall = rtrcService.addVehicle("Bearer " + authToken, vehicleRequest);
+                    Call<Vehicle> vehicleAddCall = rtrcService.addVehicle("Bearer " + ServiceContants.AUTH_TOKEN, vehicleRequest);
                     vehicleAddCall.enqueue(new Callback<Vehicle>() {
                         @Override
                         public void onResponse(Call<Vehicle> call, Response<Vehicle> response) {

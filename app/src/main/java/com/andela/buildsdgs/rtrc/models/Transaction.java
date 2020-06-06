@@ -1,6 +1,5 @@
 package com.andela.buildsdgs.rtrc.models;
 
-import androidx.annotation.NonNull;
 
 public class Transaction {
     private int transactionId;

@@ -39,9 +39,10 @@ public class VehicleRecyclerAdaptor extends RecyclerView.Adapter<VehicleRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Vehicle vehicle = vehicles.get(position);
-//        holder.mTextVehicleName.setText(vehicle.getModel());
-//        holder.mTextVehicleCategory.setText(vehic);
-//        holder.mPosition=position;
+        holder.mTextVehicleName.setText(vehicle.getModel());
+        holder.mTextVehicleCategory.setText(vehicle.getCategory().getName());
+        holder.mTxtRegVehicleNumber.setText(vehicle.getRegistrationNumber());
+        holder.mPosition=position;
     }
 
     @Override
@@ -50,13 +51,11 @@ public class VehicleRecyclerAdaptor extends RecyclerView.Adapter<VehicleRecycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         public final CircularImageView mImageVehicle;
         public final TextView mTextVehicleName;
         public final TextView mTextVehicleCategory;
         public final TextView mTxtRegVehicleNumber;
         public int mPosition;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageVehicle = itemView.findViewById(R.id.image_reg_vehicle_image);
@@ -66,12 +65,12 @@ public class VehicleRecyclerAdaptor extends RecyclerView.Adapter<VehicleRecycler
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Vehicle vehicle = vehicles.get(mPosition);
                     Intent intent = new Intent(mContext, VehicleDetailActivity.class);
-                    intent.putExtra("position b3n",mPosition);
+                    intent.putExtra("position",vehicle.getId());
                     mContext.startActivity(intent);
                 }
             });
-
         }
     }
 }
