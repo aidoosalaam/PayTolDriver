@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (passwordEditText.getText().toString().trim().isEmpty()) {
                     Snackbar.make(parent_view, "Password field must not be empty", Snackbar.LENGTH_SHORT).show();
                 } else {
-
                     String userEmail = usernameEditText.getText().toString().trim();
                     String password = passwordEditText.getText().toString().trim();
                     RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
