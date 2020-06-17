@@ -9,5 +9,7 @@ public class ServiceContants {
     public static final String CONTEXT_VEHICLE_DETAIL ="vehicles/{id}/";
     public static final String CONTEXT_WALLET_BALANCE ="wallet/";
     public static final String CONTEXT_DEPOSIT ="deposits/";
+    public static final String CONTEXT_TRANSACTION_HISTORY ="transactions/";
+    public static final String CONTEXT_TRANSACTION_DETAIL ="transactions/{id}/";
 
 }

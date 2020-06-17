@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.core.widget.NestedScrollView;
 
 import com.andela.buildsdgs.rtrc.R;
 import com.andela.buildsdgs.rtrc.models.User;
@@ -52,6 +55,16 @@ public class Tools {
             System.out.println("Shared Prefs Exception : " + e.toString());
         }
         return false;
+    }
+
+
+    public static void nestedScrollTo(final NestedScrollView nested, final View targetView) {
+        nested.post(new Runnable() {
+            @Override
+            public void run() {
+                nested.scrollTo(500, targetView.getBottom());
+            }
+        });
     }
 
     public UserDetail retrieveUserProfile(){

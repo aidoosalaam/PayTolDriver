@@ -11,20 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andela.buildsdgs.rtrc.R;
-import com.andela.buildsdgs.rtrc.models.Transaction;
+import com.andela.buildsdgs.rtrc.models.TransactionResults;
 import com.andela.buildsdgs.rtrc.ui.main.activity.TransactionDetailActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.List;
 
-public class TransactionRecyclerAdaptor extends RecyclerView.Adapter<TransactionRecyclerAdaptor.ViewHolder>{
+public class TransactionRecyclerAdaptor extends RecyclerView.Adapter<TransactionRecyclerAdaptor.ViewHolder> {
 
     private final Context mContext;
     private final LayoutInflater layoutInflater;
-    private final List<Transaction> transactions;
+    private final List<TransactionResults> transactions;
 
-
-    public TransactionRecyclerAdaptor(Context mContext, List<Transaction> transactions) {
+    public TransactionRecyclerAdaptor(Context mContext, List<TransactionResults> transactions) {
         this.mContext = mContext;
         this.layoutInflater = LayoutInflater.from(mContext);
         this.transactions = transactions;
@@ -39,10 +38,13 @@ public class TransactionRecyclerAdaptor extends RecyclerView.Adapter<Transaction
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Transaction transaction = transactions.get(position);
-        holder.mTextCarName.setText(transaction.getVehicleName());
-        holder.mTextTransxAmount.setText(transaction.getTransactionAmount());
-        holder.mTextTransxTime.setText(transaction.getTransactionTime());
+        TransactionResults transaction = transactions.get(position);
+        String[] transactionTimes = transaction.getCreatedAt().split("T");
+        String[] times = transactionTimes[1].split("\\.");
+        holder.mTextCarName.setText(transaction.getToll().getVehicle().getModel());
+        holder.mTextTransxTime.setText(times[0]);
+        holder.mTextTransxRegNumt.setText(transaction.getToll().getVehicle().getRegistrationNumber());
+        holder.mTextTransxVehType.setText(transaction.getToll().getVehicle().getCategory().getName());
         holder.mCurrentPosition = position;
     }
 
@@ -52,27 +54,32 @@ public class TransactionRecyclerAdaptor extends RecyclerView.Adapter<Transaction
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
+
         public final CircularImageView mImageVehicle;
         public final TextView mTextCarName;
         public final TextView mTextTransxTime;
-        public final TextView mTextTransxAmount;
+        public final TextView mTextTransxRegNumt;
+        public final TextView mTextTransxVehType;
         public int mCurrentPosition;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mImageVehicle = itemView.findViewById(R.id.image_transaction_image);
-            mTextCarName = itemView.findViewById(R.id.txt_deposit_ref);
-            mTextTransxTime = itemView.findViewById(R.id.txt_deposit_method);
-            mTextTransxAmount = itemView.findViewById(R.id.txt_deposit_amount);
+
+            mImageVehicle = itemView.findViewById(R.id.trnx_list_image);
+            mTextCarName = itemView.findViewById(R.id.txt_trnx_list_model);
+            mTextTransxTime = itemView.findViewById(R.id.txt_transx_list_datetime);
+            mTextTransxRegNumt = itemView.findViewById(R.id.txt_transx_list_reg_number);
+            mTextTransxVehType = itemView.findViewById(R.id.txt_tranx_list_vehicle_type);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    TransactionResults transaction = transactions.get(mCurrentPosition);
                     Intent intent = new Intent(mContext, TransactionDetailActivity.class);
-                    intent.putExtra("position b3n",mCurrentPosition);
+                    intent.putExtra("TOLL_ID", transaction.getId());
                     mContext.startActivity(intent);
                 }
             });
-
         }
     }
 }

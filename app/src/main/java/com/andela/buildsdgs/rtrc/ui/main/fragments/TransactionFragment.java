@@ -1,6 +1,7 @@
 package com.andela.buildsdgs.rtrc.ui.main.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,31 +15,69 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.andela.buildsdgs.rtrc.R;
 import com.andela.buildsdgs.rtrc.models.Transaction;
+import com.andela.buildsdgs.rtrc.services.RTRCService;
+import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.TransactionRecyclerAdaptor;
+import com.andela.buildsdgs.rtrc.utility.Tools;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class TransactionFragment extends Fragment {
     private Context mContext;
     private TransactionRecyclerAdaptor recyclerAdaptor;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transactions_layout,container,false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycle_view_trxns);
+        final View view = inflater.inflate(R.layout.fragment_transactions_layout, container, false);
+        final RecyclerView recyclerView = view.findViewById(R.id.recycle_view_trxns);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        List<Transaction> transactions = new ArrayList<>();
-        recyclerAdaptor = new TransactionRecyclerAdaptor(mContext,transactions);
-        recyclerView.setAdapter(recyclerAdaptor);
+        Tools serviceTools = new Tools(mContext);
+        RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
+        Call<Transaction> transactionCall = rtrcService.getTransactionHistory("Bearer " + serviceTools.retrieveUserProfile().getToken());
+        transactionCall.enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                if (response.isSuccessful()){
+                    recyclerAdaptor = new TransactionRecyclerAdaptor(mContext, response.body().getResults());
+                    recyclerView.setAdapter(recyclerAdaptor);
+                }else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Snackbar.make(view, "Error fetching transaction ; " + jObjError.toString(), Snackbar.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Snackbar.make(view, "Error fetching transaction ; " + e.toString(), Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                Snackbar.make(view, "Error fetching transaction ; " + t.toString(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        recyclerAdaptor.notifyDataSetChanged();;
+//        recyclerAdaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
