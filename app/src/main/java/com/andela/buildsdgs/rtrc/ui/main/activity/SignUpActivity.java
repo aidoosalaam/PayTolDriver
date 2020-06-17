@@ -49,13 +49,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText edtConfirmPassword;
     private EditText edtPhoneNumber;
     private EditText edtFullname;
-    private TextView btnSignupLogin;
-    private LoginButton btnFacebooklogin;
     private View parent_view;
-    private static final String EMAIL = "email";
     private CallbackManager callbackManager;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
 
 
     @Override
@@ -71,22 +66,19 @@ public class SignUpActivity extends AppCompatActivity {
         edtConfirmPassword = findViewById(R.id.edt_chassis_number);
         edtFullname = findViewById(R.id.edt_signup_fullname);
         edtPhoneNumber = findViewById(R.id.edt_signup_phone);
-        btnSignupLogin = findViewById(R.id.btn_signup_login);
-        btnFacebooklogin = findViewById(R.id.btn_facebook_signup);
+        TextView  btnSignupLogin = findViewById(R.id.btn_signup_login);
+        LoginButton btnFacebooklogin = findViewById(R.id.btn_facebook_signup);
         TextView btnCreateAccount = findViewById(R.id.btn_signup_create_acc);
 
-
-        // FacebookSdk.sdkInitialize(SignUpActivity.this);
-        //AppEventsLogger.activateApp(getApplication());
         AppEventsLogger.activateApp(getApplication());
         callbackManager = CallbackManager.Factory.create();
-        accessTokenTracker = new AccessTokenTracker() {
+        AccessTokenTracker  accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
 
             }
         };
-        profileTracker = new ProfileTracker() {
+        ProfileTracker profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
 
