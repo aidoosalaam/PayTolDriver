@@ -20,6 +20,7 @@ import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.activity.AddVehicleActivity;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleRecyclerAdaptor;
 import com.andela.buildsdgs.rtrc.utility.ServiceContants;
+import com.andela.buildsdgs.rtrc.utility.Tools;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -39,6 +40,7 @@ public class VehicleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_vehicle_layout, container, false);
         final RecyclerView regVehicleRecyView = view.findViewById(R.id.recycler_view_reg_vehicles);
         LinearLayoutManager regRecyLayoutManager = new LinearLayoutManager(mContext);
+        Tools serviceTools = new Tools(mContext);
         regVehicleRecyView.setLayoutManager(regRecyLayoutManager);
         FloatingActionButton fab = view.findViewById(R.id.fabtn_add_vehicle);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +53,7 @@ public class VehicleFragment extends Fragment {
 
         //fetch Vehicles List From API
         final RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
-        Call<VehicleListResp> vehicleCall = rtrcService.getVehiclesList("Bearer " + ServiceContants.AUTH_TOKEN);
+        Call<VehicleListResp> vehicleCall = rtrcService.getVehiclesList("Bearer " + serviceTools.retrieveUserProfile().getToken());
         vehicleCall.enqueue(new Callback<VehicleListResp>() {
             @Override
             public void onResponse(Call<VehicleListResp> call, Response<VehicleListResp> response) {

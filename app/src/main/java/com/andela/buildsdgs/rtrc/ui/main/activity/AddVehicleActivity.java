@@ -23,6 +23,7 @@ import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleCategorySpinnerAdaptor;
 import com.andela.buildsdgs.rtrc.utility.ServiceContants;
+import com.andela.buildsdgs.rtrc.utility.Tools;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
@@ -42,6 +43,8 @@ public class AddVehicleActivity extends AppCompatActivity {
     private Button btnSubmitVehicle;
     private Spinner spnCategories;
     private View parent_view;
+    private Tools serviceTools = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class AddVehicleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_vehicle);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        serviceTools =  new Tools(AddVehicleActivity.this);
         parent_view = findViewById(android.R.id.content);
         edtLicenseNumber = findViewById(R.id.edt_license_number);
         edtRegistrationNumber = findViewById(R.id.edt_registration_number);
@@ -60,7 +64,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
         //make API call for vehicle categories
         RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
-        Call<VehicleCategoryList> categoryListCall = rtrcService.getCategoryList("Bearer " + ServiceContants.AUTH_TOKEN);
+        Call<VehicleCategoryList> categoryListCall = rtrcService.getCategoryList("Bearer " + serviceTools.retrieveUserProfile().getToken());
         categoryListCall.enqueue(new Callback<VehicleCategoryList>() {
             @Override
             public void onResponse(Call<VehicleCategoryList> call, Response<VehicleCategoryList> response) {
@@ -73,7 +77,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             VehicleCategory category = categoryList.get(position);
                             vehicle.setCategory(category.getId());
-                            Toast.makeText(AddVehicleActivity.this, "Selected : " + vehicle.getCategory(), Toast.LENGTH_LONG).show();
+                          //  Toast.makeText(AddVehicleActivity.this, "Selected : " + vehicle.getCategory(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override
@@ -125,7 +129,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     vehicleRequest.setModel(model);
                     vehicleRequest.setRegistrationNumber(registrationNum);
                     RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
-                    Call<Vehicle> vehicleAddCall = rtrcService.addVehicle("Bearer " + ServiceContants.AUTH_TOKEN, vehicleRequest);
+                    Call<Vehicle> vehicleAddCall = rtrcService.addVehicle("Bearer " + serviceTools.retrieveUserProfile().getToken(), vehicleRequest);
                     vehicleAddCall.enqueue(new Callback<Vehicle>() {
                         @Override
                         public void onResponse(Call<Vehicle> call, Response<Vehicle> response) {

@@ -14,6 +14,7 @@ import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
+import com.andela.buildsdgs.rtrc.utility.Tools;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -42,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         btnForgotPassword = findViewById(R.id.btn_forgot_password);
         btnloginSignUp = findViewById(R.id.btn_login_sign_up);
         btnLogin = findViewById(R.id.btn_login);
-
 
         btnloginSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +74,15 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.code() == 200) {
                                 System.out.println(" debuggin starts 2....");
                                 System.out.println("Login Details ::: " + response.body().toString());
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                UserDetail userDetail = response.body();
+                                Tools serviceTool = new Tools(LoginActivity.this);
+                                if (serviceTool.saveUserProfile(userDetail)){
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }else {
+                                    Snackbar.make(parent_view, "Failed to save user profile", Snackbar.LENGTH_SHORT).show();
+                                }
+
                             } else {
                                 try {
                                     JSONObject jObjError = new JSONObject(response.errorBody().string());

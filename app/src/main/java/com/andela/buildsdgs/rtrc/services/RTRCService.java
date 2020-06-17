@@ -7,6 +7,7 @@ import com.andela.buildsdgs.rtrc.models.Vehicle;
 import com.andela.buildsdgs.rtrc.models.VehicleAddRequest;
 import com.andela.buildsdgs.rtrc.models.VehicleCategoryList;
 import com.andela.buildsdgs.rtrc.models.VehicleListResp;
+import com.andela.buildsdgs.rtrc.models.WalletResponse;
 import com.andela.buildsdgs.rtrc.utility.ServiceContants;
 
 
@@ -31,4 +32,6 @@ public interface RTRCService {
     Call<VehicleListResp> getVehiclesList(@Header("Authorization") String bearerToken);
     @GET(ServiceContants.CONTEXT_VEHICLE_DETAIL)
     Call<Vehicle> getVehicleDetail(@Header("Authorization") String bearerToken, @Path("id") String id);
+    @GET(ServiceContants.CONTEXT_WALLET_BALANCE)
+    Call<WalletResponse> getUserWallet(@Header("Authorization") String bearerToken);
 }

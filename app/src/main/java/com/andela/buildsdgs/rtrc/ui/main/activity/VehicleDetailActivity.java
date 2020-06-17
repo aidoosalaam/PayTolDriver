@@ -17,6 +17,7 @@ import com.andela.buildsdgs.rtrc.models.Vehicle;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.utility.ServiceContants;
+import com.andela.buildsdgs.rtrc.utility.Tools;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +48,7 @@ public class VehicleDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_detail);
+        Tools serviceTools =  new Tools(VehicleDetailActivity.this);
         parentView = findViewById(android.R.id.content);
         mTextModelName = findViewById(R.id.txt_vehicle_det_model);
         mTextRegistrationNumber = findViewById(R.id.txt_vehicle_det_registration_number);
@@ -62,7 +64,7 @@ public class VehicleDetailActivity extends AppCompatActivity {
 
         //make API call the vehicle detail
         RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
-        Call<Vehicle> vehicleCall = rtrcService.getVehicleDetail("Bearer " + ServiceContants.AUTH_TOKEN, categoryId);
+        Call<Vehicle> vehicleCall = rtrcService.getVehicleDetail("Bearer " + serviceTools.retrieveUserProfile().getToken(), categoryId);
         vehicleCall.enqueue(new Callback<Vehicle>() {
             @Override
             public void onResponse(Call<Vehicle> call, Response<Vehicle> response) {

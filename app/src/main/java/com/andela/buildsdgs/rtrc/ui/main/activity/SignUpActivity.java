@@ -1,9 +1,11 @@
 package com.andela.buildsdgs.rtrc.ui.main.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,13 +16,30 @@ import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.facebook.appevents.AppEventsLogger;
+
+import java.util.Arrays;
+
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -31,7 +50,12 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText edtPhoneNumber;
     private EditText edtFullname;
     private TextView btnSignupLogin;
+    private LoginButton btnFacebooklogin;
     private View parent_view;
+    private static final String EMAIL = "email";
+    private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
 
 
     @Override
@@ -40,6 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         parent_view = findViewById(android.R.id.content);
 
+
         edtEmail = findViewById(R.id.edt_signup_email);
         edtUserName = findViewById(R.id.edt_registration_number);
         edtPassword = findViewById(R.id.edt_vehicle_model);
@@ -47,7 +72,77 @@ public class SignUpActivity extends AppCompatActivity {
         edtFullname = findViewById(R.id.edt_signup_fullname);
         edtPhoneNumber = findViewById(R.id.edt_signup_phone);
         btnSignupLogin = findViewById(R.id.btn_signup_login);
+        btnFacebooklogin = findViewById(R.id.btn_facebook_signup);
         TextView btnCreateAccount = findViewById(R.id.btn_signup_create_acc);
+
+
+        // FacebookSdk.sdkInitialize(SignUpActivity.this);
+        //AppEventsLogger.activateApp(getApplication());
+        AppEventsLogger.activateApp(getApplication());
+        callbackManager = CallbackManager.Factory.create();
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
+            }
+        };
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+
+            }
+        };
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+        FacebookCallback<LoginResult> loginCallback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
+                                //Application code
+                                try {
+                                    String email = object.getString("email");
+                                    String username = email.split("@")[0];
+                                    String birthday = object.getString("birthday");
+                                    String fullName = object.getString("name");
+
+                                    edtEmail.setText(email);
+                                    edtUserName.setText(username);
+                                    edtFullname.setText(fullName);
+
+                                    System.out.println("Email : ..." + email);
+                                    System.out.println("User name : ..." + birthday);
+                                    Snackbar.make(parent_view, "Almost done, complete sign up with password and mobile number", Snackbar.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+            }
+
+            @Override
+            public void onCancel() {
+                Snackbar.make(parent_view, "Facebook Sign up canceled", Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Snackbar.make(parent_view, "Error during Facebook Sign up", Snackbar.LENGTH_SHORT).show();
+            }
+        };
+        btnFacebooklogin.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
+        // Callback registration
+        btnFacebooklogin.registerCallback(callbackManager, loginCallback);
 
         btnSignupLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +171,7 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<UserDetail> call, Response<UserDetail> response) {
                             System.out.println("Request " + call.request().body().toString());
-                            System.out.println("Request url : "+ call.request().url().toString());
+                            System.out.println("Request url : " + call.request().url().toString());
                             if (response.code() == 200 || response.code() == 201) {
                                 System.out.println("Debugging starts 2....");
                                 System.out.println("Login Details ::: " + response.body());
@@ -95,6 +190,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 }
                             }
                         }
+
                         @Override
                         public void onFailure(Call<UserDetail> call, Throwable t) {
                             System.out.println("Debugging starts 3....");
@@ -109,7 +205,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    private void checkFields() {
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
