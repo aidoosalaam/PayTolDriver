@@ -61,9 +61,9 @@ public class TransactionRecyclerAdaptor extends RecyclerView.Adapter<Transaction
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageVehicle = itemView.findViewById(R.id.image_transaction_image);
-            mTextCarName = itemView.findViewById(R.id.txt_transx_car_name);
-            mTextTransxTime = itemView.findViewById(R.id.txt_tranx_time);
-            mTextTransxAmount = itemView.findViewById(R.id.txt_transx_amount);
+            mTextCarName = itemView.findViewById(R.id.txt_deposit_ref);
+            mTextTransxTime = itemView.findViewById(R.id.txt_deposit_method);
+            mTextTransxAmount = itemView.findViewById(R.id.txt_deposit_amount);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

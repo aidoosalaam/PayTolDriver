@@ -54,7 +54,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/txt_transx_car_name"
+                        android:id="@+id/txt_deposit_ref"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
@@ -65,7 +65,7 @@
 
 
                     <TextView
-                        android:id="@+id/txt_tranx_time"
+                        android:id="@+id/txt_deposit_method"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_medium"
@@ -74,7 +74,7 @@
                         android:textColor="@color/grey_40" />
 
                     <TextView
-                        android:id="@+id/txt_transx_amount"
+                        android:id="@+id/txt_deposit_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_medium"
@@ -84,6 +84,7 @@
                         android:textColor="@color/grey_80" />
 
                 </LinearLayout>
+
 
             </LinearLayout>
 

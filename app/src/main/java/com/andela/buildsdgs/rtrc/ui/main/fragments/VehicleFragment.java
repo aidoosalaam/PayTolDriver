@@ -19,7 +19,6 @@ import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
 import com.andela.buildsdgs.rtrc.ui.main.activity.AddVehicleActivity;
 import com.andela.buildsdgs.rtrc.ui.main.adaptors.VehicleRecyclerAdaptor;
-import com.andela.buildsdgs.rtrc.utility.ServiceContants;
 import com.andela.buildsdgs.rtrc.utility.Tools;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;

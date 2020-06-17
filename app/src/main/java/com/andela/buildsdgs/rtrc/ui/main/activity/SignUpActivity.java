@@ -59,7 +59,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         parent_view = findViewById(android.R.id.content);
 
-
         edtEmail = findViewById(R.id.edt_signup_email);
         edtUserName = findViewById(R.id.edt_registration_number);
         edtPassword = findViewById(R.id.edt_vehicle_model);

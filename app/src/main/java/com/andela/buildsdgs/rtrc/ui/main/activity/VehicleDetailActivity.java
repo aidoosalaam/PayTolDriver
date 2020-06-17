@@ -16,7 +16,6 @@ import com.andela.buildsdgs.rtrc.R;
 import com.andela.buildsdgs.rtrc.models.Vehicle;
 import com.andela.buildsdgs.rtrc.services.RTRCService;
 import com.andela.buildsdgs.rtrc.services.ServiceUtil;
-import com.andela.buildsdgs.rtrc.utility.ServiceContants;
 import com.andela.buildsdgs.rtrc.utility.Tools;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
@@ -85,7 +84,6 @@ public class VehicleDetailActivity extends AppCompatActivity {
                             if (downloadQRImage(vehicleDetail.getQrCode(),vehicleDetail.getChassisNumber())){
                                 //Snackbar.make(parentView, "Downloaded to path : " + getExternalFilesDir(null) +
                                         //File.separator + vehicleDetail.getChassisNumber()+ "_qr_code.jpg", Snackbar.LENGTH_SHORT).show();
-
                             }
                         }
                     });
@@ -113,7 +111,6 @@ public class VehicleDetailActivity extends AppCompatActivity {
         FileOutputStream out = null;
         try {
             in = new ByteArrayInputStream(imgUrl.getBytes());
-           // Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + chasis+ "_qr_code.jpg");
             int c;
             while ((c = in.read()) != -1) {
@@ -139,18 +136,16 @@ public class VehicleDetailActivity extends AppCompatActivity {
                 }
             }
         }
-
         return true;
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_vehicle_det);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        Toolbar toolbar = findViewById(R.id.toolbar_vehicle_det);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

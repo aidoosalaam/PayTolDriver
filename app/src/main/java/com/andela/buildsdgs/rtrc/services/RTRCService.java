@@ -1,6 +1,7 @@
 package com.andela.buildsdgs.rtrc.services;
 
 
+import com.andela.buildsdgs.rtrc.models.DepositListResponse;
 import com.andela.buildsdgs.rtrc.models.User;
 import com.andela.buildsdgs.rtrc.models.UserDetail;
 import com.andela.buildsdgs.rtrc.models.Vehicle;
@@ -34,4 +35,6 @@ public interface RTRCService {
     Call<Vehicle> getVehicleDetail(@Header("Authorization") String bearerToken, @Path("id") String id);
     @GET(ServiceContants.CONTEXT_WALLET_BALANCE)
     Call<WalletResponse> getUserWallet(@Header("Authorization") String bearerToken);
+    @GET(ServiceContants.CONTEXT_DEPOSIT)
+    Call<DepositListResponse> getDeposit(@Header("Authorization") String bearerToken);
 }
