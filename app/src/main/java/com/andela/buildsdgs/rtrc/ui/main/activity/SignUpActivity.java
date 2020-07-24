@@ -98,15 +98,11 @@ public class SignUpActivity extends AppCompatActivity {
                                 try {
                                     String email = object.getString("email");
                                     String username = email.split("@")[0];
-                                    String birthday = object.getString("birthday");
                                     String fullName = object.getString("name");
-
                                     edtEmail.setText(email);
                                     edtUserName.setText(username);
                                     edtFullname.setText(fullName);
-
                                     System.out.println("Email : ..." + email);
-                                    System.out.println("User name : ..." + birthday);
                                     Snackbar.make(parent_view, "Almost done, complete sign up with password and mobile number", Snackbar.LENGTH_SHORT).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -131,7 +127,7 @@ public class SignUpActivity extends AppCompatActivity {
                 Snackbar.make(parent_view, "Error during Facebook Sign up", Snackbar.LENGTH_SHORT).show();
             }
         };
-        btnFacebooklogin.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
+        btnFacebooklogin.setReadPermissions(Arrays.asList("public_profile", "email"));
         // Callback registration
         btnFacebooklogin.registerCallback(callbackManager, loginCallback);
 

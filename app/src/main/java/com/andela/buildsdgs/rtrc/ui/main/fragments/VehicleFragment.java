@@ -49,14 +49,12 @@ public class VehicleFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         //fetch Vehicles List From API
         final RTRCService rtrcService = ServiceUtil.buildService(RTRCService.class);
         Call<VehicleListResp> vehicleCall = rtrcService.getVehiclesList("Bearer " + serviceTools.retrieveUserProfile().getToken());
         vehicleCall.enqueue(new Callback<VehicleListResp>() {
             @Override
             public void onResponse(Call<VehicleListResp> call, Response<VehicleListResp> response) {
-
                 if (response.isSuccessful()) {
                     VehicleRecyclerAdaptor recyclerAdaptor = new VehicleRecyclerAdaptor(mContext, response.body().getResults());
                     regVehicleRecyView.setAdapter(recyclerAdaptor);
@@ -64,7 +62,6 @@ public class VehicleFragment extends Fragment {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Snackbar.make(view, "Could not retrieve vehicles. Reason : " + jObjError.toString(), Snackbar.LENGTH_SHORT).show();
-
                     } catch (Exception e) {
                         Snackbar.make(view, "Failed; Reason : " + e.toString(), Snackbar.LENGTH_SHORT).show();
                     }

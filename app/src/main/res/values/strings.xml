@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RTRC</string>
+    <string name="app_name">PayTol Driver</string>
     <string name="tab_text_1">Vahicles</string>
     <string name="tab_text_2">Transactions</string>
     <string name="tab_text_3">Account</string>
@@ -16,6 +16,5 @@
 
     <string name="facebook_app_id">2556557637937943</string>
     <string name="fb_login_protocol_scheme">fb2556557637937943</string>
-
 
 </resources>
